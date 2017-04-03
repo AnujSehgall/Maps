@@ -1,5 +1,6 @@
 package com.anuj.map;
 
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
@@ -11,13 +12,16 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
+import java.util.List;
+
 import static com.anuj.map.R.id.map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private TrackGPS gps;
-    double longitude;
+    double longitude,newLat,newLng;
     double latitude;
 
     @Override
@@ -68,15 +72,43 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
+        Geocoder gc = new Geocoder(MapsActivity.this);
+
+        List<android.location.Address> list = null;
+
+        //LatLng latLng = marker.getPosition();
+
+
+
+        try {
+            list = gc.getFromLocation(latitude,longitude,1);
+            newLat = latitude;
+            newLng = longitude;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        // Toast.makeText(MapsActivity.this,newLat + " , " + newLng, Toast.LENGTH_SHORT).show();
+
+        android.location.Address add =   list.get(0);
+        String add1 = add.getAddressLine(1);
+        String add2 = add.getAddressLine(2);
+        /*marker.setTitle(add.getAddressLine(1));
+        marker.setSnippet(add.getAddressLine(2));
+        marker.showInfoWindow();
+        */// Add a marker in Sydney and move the camera
         LatLng latLng= new LatLng(latitude, longitude);
-        mMap.addMarker(new MarkerOptions().position(latLng).title("Current Location")).setVisible(true);
+        mMap.addMarker(new MarkerOptions().position(latLng).title(add1).snippet(add2)).setVisible(true);
+
+        //new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.mark));
+
 
         // Move the camera instantly to location with a zoom of 15.
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 22));
 
         // Zoom in, animating the camera.
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(18), 2000, null);
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(16), 2000, null);
 
         //mMap.addMarker(new MarkerOptions().position(latLng).title("Current Location"));
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
