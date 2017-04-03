@@ -92,14 +92,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Toast.makeText(MapsActivity.this,newLat + " , " + newLng, Toast.LENGTH_SHORT).show();
 
         android.location.Address add =   list.get(0);
-        String add1 = add.getAddressLine(1);
-        String add2 = add.getAddressLine(2);
+        String addressLine1 = add.getAddressLine(1);
+        String addressLine2 = add.getAddressLine(2);
         /*marker.setTitle(add.getAddressLine(1));
         marker.setSnippet(add.getAddressLine(2));
         marker.showInfoWindow();
         */// Add a marker in Sydney and move the camera
         LatLng latLng= new LatLng(latitude, longitude);
-        mMap.addMarker(new MarkerOptions().position(latLng).title(add1).snippet(add2)).setVisible(true);
+        mMap.addMarker(new MarkerOptions().position(latLng).title(addressLine1).snippet(addressLine2)).setVisible(true);
 
         //new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.mark));
 
