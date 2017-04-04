@@ -16,12 +16,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -36,6 +38,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private TrackGPS gps;
     double longitude, newLat, newLng;
     double latitude;
+    Button lct;
+
+    public LatLng newlatlng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +105,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
     */
 
+        newlatlng = new LatLng(13.119053, 77.578741);
+        lct = (Button) findViewById(R.id.lcote);
+        lct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addOldMark(13.119053, 77.578741);
+            }
+        });
+
+
     }
 
 
@@ -156,6 +171,40 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //mMap.addMarker(new MarkerOptions().position(latLng).title("Current Location"));
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+
+
+    }
+
+    private void addOldMark(double lat, double lng) {
+        LatLng ll = new LatLng(lat, lng);
+
+        Geocoder gc = new Geocoder(MapsActivity.this);
+
+        List<android.location.Address> list = null;
+
+        //LatLng latLng = marker.getPosition();
+
+
+
+        try {
+            list = gc.getFromLocation(13.119053, 77.578741,1);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        // Toast.makeText(MapsActivity.this,newLat + " , " + newLng, Toast.LENGTH_SHORT).show();
+
+        android.location.Address add =   list.get(0);
+        String addressLine1 = add.getAddressLine(0);
+        String addressLine2 = add.getAddressLine(2);
+        mMap.addMarker(new MarkerOptions().position(ll).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)).title("Child's location ").snippet(addressLine1));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newlatlng, 22));
+
+        // Zoom in, animating the camera.
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
+
     }
 
     @Override

@@ -9,8 +9,8 @@
     tools:showIn="@layout/app_bar_main">
 
     <RelativeLayout
-        android:layout_width="450dp"
-        android:layout_height="0dp">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
@@ -22,6 +22,27 @@
         tools:context="com.anuj.map.MapsActivity"
         tools:layout_editor_absoluteY="8dp"
         tools:layout_editor_absoluteX="8dp" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/lcote"
+                android:layout_width="180dp"
+                android:layout_height="80dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/cast_mini_controller_gradient_light"
+                android:elevation="20dp"
+                android:text="Locate "
+                android:textSize="20dp"
+                android:textStyle="bold|italic"
+                android:visibility="visible" />
+
+        </RelativeLayout>
+
+
 
     </RelativeLayout>
 
