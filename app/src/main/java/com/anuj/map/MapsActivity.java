@@ -3,6 +3,7 @@ package com.anuj.map;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -28,6 +29,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import static com.anuj.map.R.id.map;
@@ -40,7 +42,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     double latitude;
     Button lct;
 
-    public LatLng newlatlng;
+    public LatLng newlatlng,latLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,7 +159,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         marker.setSnippet(add.getAddressLine(2));
         marker.showInfoWindow();
         */// Add a marker in Sydney and move the camera
-        LatLng latLng= new LatLng(latitude, longitude);
+        latLng= new LatLng(latitude, longitude);
         mMap.addMarker(new MarkerOptions().position(latLng).title(addressLine1).snippet(addressLine2)).setVisible(true);
 
         //new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.mark));
@@ -205,6 +207,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Zoom in, animating the camera.
         mMap.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
 
+
+        float[] results = new float[1];
+        Location.distanceBetween(latitude, longitude, 13.119053, 77.578741, results);
+        float distance = results[0];
+
+        double dist = (double) distance/1000;
+        DecimalFormat f = new DecimalFormat("##.00");
+
+        Toast.makeText(getApplicationContext(), "Distance to Travel is: "+f.format(dist)+" km",Toast.LENGTH_LONG).show();
+
     }
 
     @Override
@@ -223,6 +235,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
